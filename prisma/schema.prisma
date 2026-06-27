@@ -1,0 +1,430 @@
+// ============================================================
+// Student Helping Portal — Prisma Schema (MySQL)
+// ============================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// ------------------------------------------------------------
+// Enums
+// ------------------------------------------------------------
+
+enum Role {
+  ADMIN
+  STUDENT
+}
+
+enum Status {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum CategoryType {
+  RESOURCE
+  ARTICLE
+  NOTICE
+  DOWNLOAD
+  GUIDE
+}
+
+enum ResourceType {
+  NOTES
+  PDF_BOOK
+  PREVIOUS_QUESTION
+  ASSIGNMENT
+  VIDEO_TUTORIAL
+}
+
+enum NoticeType {
+  UNIVERSITY
+  EXAM
+  SCHOLARSHIP
+  GENERAL
+}
+
+enum GuideType {
+  ADMISSION
+  SCHOLARSHIP
+  INTERNSHIP
+  CAREER
+  RESEARCH
+}
+
+enum BookmarkType {
+  RESOURCE
+  ARTICLE
+}
+
+// ------------------------------------------------------------
+// Auth (NextAuth v5 / Auth.js — Credentials + Prisma Adapter)
+// ------------------------------------------------------------
+
+model User {
+  id            String    @id @default(cuid())
+  name          String
+  email         String    @unique
+  password      String
+  role          Role      @default(STUDENT)
+  isBlocked     Boolean   @default(false)
+  emailVerified DateTime?
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  accounts  Account[]
+  sessions  Session[]
+  bookmarks Bookmark[]
+
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+// ------------------------------------------------------------
+// Taxonomy
+// ------------------------------------------------------------
+
+model Category {
+  id        String       @id @default(cuid())
+  name      String
+  slug      String       @unique
+  type      CategoryType
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  resources Resource[]
+  notices   Notice[]
+  articles  Article[]
+  downloads Download[]
+
+  @@index([type])
+  @@map("categories")
+}
+
+model Department {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String?  @db.Text
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  subjects      Subject[]
+  resources     Resource[]
+  examSchedules ExamSchedule[]
+
+  @@map("departments")
+}
+
+model Subject {
+  id           String   @id @default(cuid())
+  name         String
+  code         String
+  description  String?  @db.Text
+  departmentId String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  department    Department     @relation(fields: [departmentId], references: [id], onDelete: Cascade)
+  examSchedules ExamSchedule[]
+
+  @@index([departmentId])
+  @@map("subjects")
+}
+
+// ------------------------------------------------------------
+// Content: Resources
+// ------------------------------------------------------------
+
+model Resource {
+  id            String       @id @default(cuid())
+  title         String
+  slug          String       @unique
+  description   String       @db.Text
+  resourceType  ResourceType
+  fileUrl       String?
+  videoUrl      String?
+  thumbnailUrl  String?
+  isFeatured    Boolean      @default(false)
+  status        Status       @default(DRAFT)
+  viewCount     Int          @default(0)
+  downloadCount Int          @default(0)
+  categoryId    String?
+  departmentId  String?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  category   Category?   @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  department Department? @relation(fields: [departmentId], references: [id], onDelete: SetNull)
+  bookmarks  Bookmark[]
+
+  @@index([status])
+  @@index([resourceType])
+  @@index([categoryId])
+  @@index([departmentId])
+  @@map("resources")
+}
+
+// ------------------------------------------------------------
+// Content: Notices
+// ------------------------------------------------------------
+
+model Notice {
+  id          String     @id @default(cuid())
+  title       String
+  slug        String     @unique
+  content     String     @db.Text
+  noticeType  NoticeType
+  publishDate DateTime   @default(now())
+  expiryDate  DateTime?
+  status      Status     @default(DRAFT)
+  categoryId  String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  category Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+
+  @@index([status])
+  @@index([noticeType])
+  @@map("notices")
+}
+
+// ------------------------------------------------------------
+// Content: Articles
+// ------------------------------------------------------------
+
+model Article {
+  id           String   @id @default(cuid())
+  title        String
+  slug         String   @unique
+  excerpt      String   @db.Text
+  content      String   @db.Text
+  thumbnailUrl String?
+  status       Status   @default(DRAFT)
+  viewCount    Int      @default(0)
+  categoryId   String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  category  Category?  @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  bookmarks Bookmark[]
+
+  @@index([status])
+  @@index([categoryId])
+  @@map("articles")
+}
+
+// ------------------------------------------------------------
+// Content: Downloads
+// ------------------------------------------------------------
+
+model Download {
+  id            String   @id @default(cuid())
+  title         String
+  slug          String   @unique
+  description   String   @db.Text
+  fileUrl       String
+  downloadCount Int      @default(0)
+  status        Status   @default(DRAFT)
+  categoryId    String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  category Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+
+  @@index([status])
+  @@map("downloads")
+}
+
+// ------------------------------------------------------------
+// Content: Guides
+// ------------------------------------------------------------
+
+model Guide {
+  id        String    @id @default(cuid())
+  title     String
+  slug      String    @unique
+  content   String    @db.Text
+  guideType GuideType
+  status    Status    @default(DRAFT)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([status])
+  @@index([guideType])
+  @@map("guides")
+}
+
+// ------------------------------------------------------------
+// Academic Calendar & Exam Schedule
+// ------------------------------------------------------------
+
+model AcademicCalendar {
+  id          String   @id @default(cuid())
+  title       String
+  description String?  @db.Text
+  startDate   DateTime
+  endDate     DateTime
+  type        String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("academic_calendar")
+}
+
+model ExamSchedule {
+  id           String   @id @default(cuid())
+  title        String
+  departmentId String?
+  subjectId    String?
+  examDate     DateTime
+  startTime    String
+  endTime      String
+  room         String?
+  description  String?  @db.Text
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  department Department? @relation(fields: [departmentId], references: [id], onDelete: SetNull)
+  subject    Subject?    @relation(fields: [subjectId], references: [id], onDelete: SetNull)
+
+  @@index([departmentId])
+  @@index([subjectId])
+  @@map("exam_schedules")
+}
+
+// ------------------------------------------------------------
+// Bookmarks
+// ------------------------------------------------------------
+
+model Bookmark {
+  id         String       @id @default(cuid())
+  userId     String
+  type       BookmarkType
+  resourceId String?
+  articleId  String?
+  createdAt  DateTime     @default(now())
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  resource Resource? @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+  article  Article?  @relation(fields: [articleId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, resourceId])
+  @@unique([userId, articleId])
+  @@index([userId])
+  @@map("bookmarks")
+}
+
+// ------------------------------------------------------------
+// Contact Messages
+// ------------------------------------------------------------
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String
+  message   String   @db.Text
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@map("contact_messages")
+}
+
+// ------------------------------------------------------------
+// Site Settings (singleton row)
+// ------------------------------------------------------------
+
+model SiteSetting {
+  id              String   @id @default(cuid())
+  siteName        String   @default("Student Helping Portal")
+  siteLanguage    String   @default("en")
+  logoUrl         String?
+  contactEmail    String   @default("info@studentportal.com")
+  phone           String?
+  address         String?
+  facebookUrl     String?
+  twitterUrl      String?
+  linkedinUrl     String?
+  youtubeUrl      String?
+  seoTitle        String?  @db.Text
+  seoDescription  String?  @db.Text
+  updatedAt       DateTime @updatedAt
+
+  @@map("site_settings")
+}
+
+model Language {
+  id           String                @id @default(cuid())
+  code         String                @unique
+  name         String
+  nativeName   String?
+  isActive     Boolean               @default(true)
+  isDefault    Boolean               @default(false)
+  createdAt    DateTime              @default(now())
+  updatedAt    DateTime              @updatedAt
+
+  translations LanguageTranslation[]
+
+  @@map("languages")
+}
+
+model LanguageTranslation {
+  id         String   @id @default(cuid())
+  languageId String
+  key        String
+  value      String   @db.Text
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  language Language @relation(fields: [languageId], references: [id], onDelete: Cascade)
+
+  @@unique([languageId, key])
+  @@index([languageId])
+  @@map("language_translations")
+}
