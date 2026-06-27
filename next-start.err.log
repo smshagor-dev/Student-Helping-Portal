@@ -1,0 +1,147 @@
+ ⨯ Error: ENOENT: no such file or directory, open 'E:\project\student-helping-portal\student-helping-portal\.next\required-server-files.json'
+    at async M (E:\project\student-helping-portal\student-helping-portal\.next\server\app\(public)\page.js:1:9268) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'E:\\project\\student-helping-portal\\student-helping-portal\\.next\\required-server-files.json'
+}
+ ⨯ Error: ENOENT: no such file or directory, open 'E:\project\student-helping-portal\student-helping-portal\.next\required-server-files.json'
+    at async (E:\project\student-helping-portal\student-helping-portal\.next\server\pages\_error.js:1:6813) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'E:\\project\\student-helping-portal\\student-helping-portal\\.next\\required-server-files.json'
+}
+ ⨯ Error: ENOENT: no such file or directory, open 'E:\project\student-helping-portal\student-helping-portal\.next\required-server-files.json'
+    at async M (E:\project\student-helping-portal\student-helping-portal\.next\server\app\(public)\page.js:1:9268) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'E:\\project\\student-helping-portal\\student-helping-portal\\.next\\required-server-files.json'
+}
+ ⨯ Error: ENOENT: no such file or directory, open 'E:\project\student-helping-portal\student-helping-portal\.next\required-server-files.json'
+    at async (E:\project\student-helping-portal\student-helping-portal\.next\server\pages\_error.js:1:6813) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'E:\\project\\student-helping-portal\\student-helping-portal\\.next\\required-server-files.json'
+}
+ ⨯ Error: ENOENT: no such file or directory, open 'E:\project\student-helping-portal\student-helping-portal\.next\required-server-files.json'
+    at async M (E:\project\student-helping-portal\student-helping-portal\.next\server\app\(public)\page.js:1:9268) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'E:\\project\\student-helping-portal\\student-helping-portal\\.next\\required-server-files.json'
+}
+ ⨯ Error: ENOENT: no such file or directory, open 'E:\project\student-helping-portal\student-helping-portal\.next\required-server-files.json'
+    at async (E:\project\student-helping-portal\student-helping-portal\.next\server\pages\_error.js:1:6813) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'E:\\project\\student-helping-portal\\student-helping-portal\\.next\\required-server-files.json'
+}
+ ⨯ Error: ENOENT: no such file or directory, open 'E:\project\student-helping-portal\student-helping-portal\.next\required-server-files.json'
+    at async B (E:\project\student-helping-portal\student-helping-portal\.next\server\app\api\auth\[...nextauth]\route.js:1:2094) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'E:\\project\\student-helping-portal\\student-helping-portal\\.next\\required-server-files.json'
+}
+ ⨯ Error: ENOENT: no such file or directory, open 'E:\project\student-helping-portal\student-helping-portal\.next\required-server-files.json'
+    at async (E:\project\student-helping-portal\student-helping-portal\.next\server\pages\_error.js:1:6813) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'E:\\project\\student-helping-portal\\student-helping-portal\\.next\\required-server-files.json'
+}
+ ⨯ Error: ENOENT: no such file or directory, open 'E:\project\student-helping-portal\student-helping-portal\.next\required-server-files.json'
+    at async B (E:\project\student-helping-portal\student-helping-portal\.next\server\app\api\auth\[...nextauth]\route.js:1:2094) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'E:\\project\\student-helping-portal\\student-helping-portal\\.next\\required-server-files.json'
+}
+ ⨯ Error: ENOENT: no such file or directory, open 'E:\project\student-helping-portal\student-helping-portal\.next\required-server-files.json'
+    at async (E:\project\student-helping-portal\student-helping-portal\.next\server\pages\_error.js:1:6813) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'E:\\project\\student-helping-portal\\student-helping-portal\\.next\\required-server-files.json'
+}
+ ⨯ Error: ENOENT: no such file or directory, open 'E:\project\student-helping-portal\student-helping-portal\.next\required-server-files.json'
+    at async M (E:\project\student-helping-portal\student-helping-portal\.next\server\app\(auth)\login\page.js:1:3903) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'E:\\project\\student-helping-portal\\student-helping-portal\\.next\\required-server-files.json'
+}
+ ⨯ Error: ENOENT: no such file or directory, open 'E:\project\student-helping-portal\student-helping-portal\.next\required-server-files.json'
+    at async (E:\project\student-helping-portal\student-helping-portal\.next\server\pages\_error.js:1:6813) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'E:\\project\\student-helping-portal\\student-helping-portal\\.next\\required-server-files.json'
+}
+ ⨯ Error: ENOENT: no such file or directory, open 'E:\project\student-helping-portal\student-helping-portal\.next\required-server-files.json'
+    at async M (E:\project\student-helping-portal\student-helping-portal\.next\server\app\(public)\page.js:1:9268) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'E:\\project\\student-helping-portal\\student-helping-portal\\.next\\required-server-files.json'
+}
+ ⨯ Error: ENOENT: no such file or directory, open 'E:\project\student-helping-portal\student-helping-portal\.next\required-server-files.json'
+    at async (E:\project\student-helping-portal\student-helping-portal\.next\server\pages\_error.js:1:6813) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'E:\\project\\student-helping-portal\\student-helping-portal\\.next\\required-server-files.json'
+}
+ ⨯ Error: ENOENT: no such file or directory, open 'E:\project\student-helping-portal\student-helping-portal\.next\required-server-files.json'
+    at async M (E:\project\student-helping-portal\student-helping-portal\.next\server\app\_not-found\page.js:1:3750) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'E:\\project\\student-helping-portal\\student-helping-portal\\.next\\required-server-files.json'
+}
+ ⨯ Error: ENOENT: no such file or directory, open 'E:\project\student-helping-portal\student-helping-portal\.next\required-server-files.json'
+    at async M (E:\project\student-helping-portal\student-helping-portal\.next\server\app\(public)\page.js:1:9268) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'E:\\project\\student-helping-portal\\student-helping-portal\\.next\\required-server-files.json'
+}
+ ⨯ Error: ENOENT: no such file or directory, open 'E:\project\student-helping-portal\student-helping-portal\.next\required-server-files.json'
+    at async (E:\project\student-helping-portal\student-helping-portal\.next\server\pages\_error.js:1:6813) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'E:\\project\\student-helping-portal\\student-helping-portal\\.next\\required-server-files.json'
+}
+ ⨯ Error: ENOENT: no such file or directory, open 'E:\project\student-helping-portal\student-helping-portal\.next\required-server-files.json'
+    at async M (E:\project\student-helping-portal\student-helping-portal\.next\server\app\_not-found\page.js:1:3750) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'E:\\project\\student-helping-portal\\student-helping-portal\\.next\\required-server-files.json'
+}
+ ⨯ Error: ENOENT: no such file or directory, open 'E:\project\student-helping-portal\student-helping-portal\.next\required-server-files.json'
+    at async M (E:\project\student-helping-portal\student-helping-portal\.next\server\app\(public)\page.js:1:9268) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'E:\\project\\student-helping-portal\\student-helping-portal\\.next\\required-server-files.json'
+}
+ ⨯ Error: ENOENT: no such file or directory, open 'E:\project\student-helping-portal\student-helping-portal\.next\required-server-files.json'
+    at async (E:\project\student-helping-portal\student-helping-portal\.next\server\pages\_error.js:1:6813) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'E:\\project\\student-helping-portal\\student-helping-portal\\.next\\required-server-files.json'
+}
+ ⨯ Error: ENOENT: no such file or directory, open 'E:\project\student-helping-portal\student-helping-portal\.next\required-server-files.json'
+    at async M (E:\project\student-helping-portal\student-helping-portal\.next\server\app\_not-found\page.js:1:3750) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'E:\\project\\student-helping-portal\\student-helping-portal\\.next\\required-server-files.json'
+}
