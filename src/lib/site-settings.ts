@@ -7,6 +7,7 @@ export type SiteLanguage = string;
 export type SiteSettingsSnapshot = {
   siteName: string;
   siteLanguage: SiteLanguage;
+  logoUrl: string | null;
   contactEmail: string;
   phone: string | null;
   address: string | null;
@@ -21,6 +22,7 @@ export type SiteSettingsSnapshot = {
 const defaultSettings: SiteSettingsSnapshot = {
   siteName: "Student Helping Portal",
   siteLanguage: "en",
+  logoUrl: null,
   contactEmail: "info@studentportal.com",
   phone: null,
   address: null,
@@ -44,6 +46,7 @@ export async function getSiteSettings(): Promise<SiteSettingsSnapshot> {
     return {
       siteName: settings.siteName,
       siteLanguage: normalizeLanguage(settings.siteLanguage),
+      logoUrl: settings.logoUrl,
       contactEmail: settings.contactEmail,
       phone: settings.phone,
       address: settings.address,

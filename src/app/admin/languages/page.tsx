@@ -66,6 +66,8 @@ export default function AdminLanguagesPage() {
   const [saving, setSaving] = React.useState(false);
   const [savingTranslations, setSavingTranslations] = React.useState(false);
   const [form, setForm] = React.useState(emptyForm);
+  const [newTranslationKey, setNewTranslationKey] = React.useState("");
+  const [newTranslationValue, setNewTranslationValue] = React.useState("");
   const { toast } = useToast();
 
   async function fetchLanguages() {
@@ -109,6 +111,8 @@ export default function AdminLanguagesPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to load translations");
       setTranslationState(data);
+      setNewTranslationKey("");
+      setNewTranslationValue("");
     } catch (err) {
       toast({
         title: "Error",
@@ -170,13 +174,50 @@ export default function AdminLanguagesPage() {
     }
   }
 
+  function addTranslationKey() {
+    const key = newTranslationKey.trim();
+
+    if (!key) {
+      toast({ title: "Key is required", variant: "destructive" });
+      return;
+    }
+
+    if (!/^[a-zA-Z0-9_.-]+$/.test(key)) {
+      toast({
+        title: "Invalid key",
+        description: "Use letters, numbers, dots, underscores, and hyphens only.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (translationState?.translations[key] !== undefined) {
+      toast({ title: "Key already exists", variant: "destructive" });
+      return;
+    }
+
+    setTranslationState((state) =>
+      state
+        ? {
+            ...state,
+            translations: {
+              ...state.translations,
+              [key]: newTranslationValue,
+            },
+          }
+        : state
+    );
+    setNewTranslationKey("");
+    setNewTranslationValue("");
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="font-display text-2xl font-semibold">Languages</h1>
           <p className="text-sm text-muted-foreground">
-            Add new languages, set the default locale, and edit translation keys.
+            Add a language with New Language, then use Translation Keys to add or edit UI text.
           </p>
         </div>
         <Button onClick={openCreate}>
@@ -229,7 +270,7 @@ export default function AdminLanguagesPage() {
                   <TableCell>
                     <div className="flex gap-1">
                       <Button variant="outline" size="sm" onClick={() => openTranslations(language)}>
-                        Keys
+                        Translation Keys
                       </Button>
                       <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => openEdit(language)}>
                         <Pencil className="h-4 w-4" />
@@ -328,10 +369,35 @@ export default function AdminLanguagesPage() {
                 <CardHeader>
                   <CardTitle className="text-base">Edit translation values</CardTitle>
                   <CardDescription>
-                    Keys come from the base English dictionary. You can update values line by line.
+                    Add custom keys here, then save translations. New keys appear in the app when the UI uses that key.
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="max-h-[60vh] overflow-y-auto space-y-4">
+                  <div className="rounded-md border p-3">
+                    <div className="grid gap-3 md:grid-cols-[1fr_1fr_auto]">
+                      <div className="space-y-1.5">
+                        <Label htmlFor="newTranslationKey">New Key</Label>
+                        <Input
+                          id="newTranslationKey"
+                          value={newTranslationKey}
+                          onChange={(e) => setNewTranslationKey(e.target.value)}
+                          placeholder="section.label"
+                        />
+                      </div>
+                      <div className="space-y-1.5">
+                        <Label htmlFor="newTranslationValue">Value</Label>
+                        <Input
+                          id="newTranslationValue"
+                          value={newTranslationValue}
+                          onChange={(e) => setNewTranslationValue(e.target.value)}
+                          placeholder="Translation value"
+                        />
+                      </div>
+                      <Button type="button" className="self-end" onClick={addTranslationKey}>
+                        <Plus className="h-4 w-4" /> Add Key
+                      </Button>
+                    </div>
+                  </div>
                   {Object.entries(translationState.translations).map(([key, value]) => (
                     <div key={key} className="space-y-1.5">
                       <Label htmlFor={key} className="font-mono text-xs">

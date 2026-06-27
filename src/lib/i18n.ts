@@ -18,6 +18,7 @@ const dictionaries = {
       login: "Log in",
       signup: "Sign up",
       logout: "Log out",
+      language: "Language",
       searchPlaceholder: "Search...",
       mobileSearchPlaceholder: "Search resources, notices, articles...",
       toggleMenu: "Toggle menu",
@@ -36,7 +37,7 @@ const dictionaries = {
       articles: "Articles",
       aboutUs: "About Us",
       contactUs: "Contact",
-      copyrightSuffix: "Built as an academic thesis project.",
+      copyrightSuffix: "All Right Reserved",
     },
     auth: {
       welcomeBack: "Welcome back",
@@ -122,7 +123,7 @@ const dictionaries = {
     about: {
       titlePrefix: "About",
       description:
-        "A single, organized place for students to find the academic information, study materials, and guidance they need built as an academic thesis project.",
+        "A single, organized place for students to find the academic information, study materials, and guidance they need All Right Reserved",
       mission: "Our Mission",
       missionDescription:
         "Make academic resources, notices, and guidance accessible to every student, regardless of department or year.",
@@ -197,6 +198,7 @@ const dictionaries = {
       login: "লগ ইন",
       signup: "সাইন আপ",
       logout: "লগ আউট",
+      language: "ভাষা",
       searchPlaceholder: "সার্চ করুন...",
       mobileSearchPlaceholder: "রিসোর্স, নোটিশ, আর্টিকেল সার্চ করুন...",
       toggleMenu: "মেনু টগল করুন",

@@ -31,6 +31,7 @@ import {
 import { DeleteButton } from "@/components/admin/delete-button";
 import { StatusBadge } from "@/components/admin/status-badge";
 import { EmptyState } from "@/components/shared/empty-state";
+import { FileUploadField } from "@/components/shared/file-upload-field";
 import { TableSkeleton } from "@/components/shared/skeletons";
 import { useToast } from "@/components/ui/use-toast";
 import { slugifyText } from "@/lib/utils";
@@ -237,17 +238,14 @@ export default function AdminDownloadsPage() {
                 onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))}
               />
             </div>
-            <div className="space-y-1.5">
-              <Label htmlFor="fileUrl">File URL</Label>
-              <Input
-                id="fileUrl"
-                type="url"
-                required
-                value={form.fileUrl}
-                onChange={(e) => setForm((f) => ({ ...f, fileUrl: e.target.value }))}
-                placeholder="https://..."
-              />
-            </div>
+            <FileUploadField
+              id="fileUrl"
+              label="File"
+              value={form.fileUrl}
+              onChange={(value) => setForm((f) => ({ ...f, fileUrl: value }))}
+              accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,image/*"
+              required
+            />
 
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-1.5">

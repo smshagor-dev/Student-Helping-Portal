@@ -111,6 +111,7 @@ export default async function ResourceDetailPage({
             alt={resource.title}
             fill
             className="object-cover"
+            unoptimized={resource.thumbnailUrl.startsWith("/uploads/")}
           />
         </div>
       )}

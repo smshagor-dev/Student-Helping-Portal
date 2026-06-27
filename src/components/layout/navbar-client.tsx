@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
-import { Menu, X, Search, User, LayoutDashboard, LogOut, Shield } from "lucide-react";
+import { Menu, X, Search, User, LayoutDashboard, LogOut, Shield, Languages } from "lucide-react";
 import type { Session } from "next-auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,10 +14,15 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
   DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
 import { LanguageSwitcher } from "./language-switcher";
 
@@ -33,6 +38,7 @@ interface NavbarLabels {
   login: string;
   signup: string;
   logout: string;
+  language: string;
   searchPlaceholder: string;
   mobileSearchPlaceholder: string;
   toggleMenu: string;
@@ -59,6 +65,8 @@ export function NavbarClient({
 }) {
   const [open, setOpen] = React.useState(false);
   const [query, setQuery] = React.useState("");
+  const [languageValue, setLanguageValue] = React.useState(currentLanguage);
+  const [languageSaving, setLanguageSaving] = React.useState(false);
   const router = useRouter();
   const pathname = usePathname();
 
@@ -66,11 +74,32 @@ export function NavbarClient({
     setOpen(false);
   }, [pathname]);
 
+  React.useEffect(() => {
+    setLanguageValue(currentLanguage);
+  }, [currentLanguage]);
+
   function handleSearch(e: React.FormEvent) {
     e.preventDefault();
     if (query.trim()) {
       router.push(`/search?q=${encodeURIComponent(query.trim())}`);
       setQuery("");
+    }
+  }
+
+  async function handleLanguageChange(nextValue: string) {
+    if (nextValue === languageValue) return;
+
+    setLanguageValue(nextValue);
+    setLanguageSaving(true);
+    try {
+      await fetch("/api/language", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code: nextValue }),
+      });
+      router.refresh();
+    } finally {
+      setLanguageSaving(false);
     }
   }
 
@@ -101,9 +130,11 @@ export function NavbarClient({
       </nav>
 
       <div className="flex items-center gap-3">
-        <div className="hidden sm:block">
-          <LanguageSwitcher languages={languages} currentLanguage={currentLanguage} />
-        </div>
+        {!session?.user && (
+          <div className="hidden sm:block">
+            <LanguageSwitcher languages={languages} currentLanguage={currentLanguage} />
+          </div>
+        )}
         <form onSubmit={handleSearch} className="hidden md:flex relative">
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
@@ -119,6 +150,7 @@ export function NavbarClient({
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon" className="rounded-full">
                 <Avatar className="h-9 w-9">
+                  {session.user.image && <AvatarImage src={session.user.image} alt={session.user.name ?? "User"} />}
                   <AvatarFallback className="text-xs">{initials}</AvatarFallback>
                 </Avatar>
               </Button>
@@ -148,6 +180,25 @@ export function NavbarClient({
                   <User className="mr-2 h-4 w-4" /> {labels.profile}
                 </Link>
               </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuSub>
+                <DropdownMenuSubTrigger>
+                  <Languages className="mr-2 h-4 w-4" /> {labels.language}
+                </DropdownMenuSubTrigger>
+                <DropdownMenuSubContent className="w-56">
+                  <DropdownMenuRadioGroup value={languageValue} onValueChange={handleLanguageChange}>
+                    {languages.map((language) => (
+                      <DropdownMenuRadioItem
+                        key={language.code}
+                        value={language.code}
+                        disabled={languageSaving}
+                      >
+                        {language.code.toUpperCase()} - {language.nativeName || language.name}
+                      </DropdownMenuRadioItem>
+                    ))}
+                  </DropdownMenuRadioGroup>
+                </DropdownMenuSubContent>
+              </DropdownMenuSub>
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={() => signOut({ callbackUrl: "/" })}
@@ -191,9 +242,11 @@ export function NavbarClient({
             />
           </form>
           <div className="flex flex-col gap-1">
-            <div className="sm:hidden mb-3">
-              <LanguageSwitcher languages={languages} currentLanguage={currentLanguage} />
-            </div>
+            {!session?.user && (
+              <div className="sm:hidden mb-3">
+                <LanguageSwitcher languages={languages} currentLanguage={currentLanguage} />
+              </div>
+            )}
             {links.map((link) => (
               <Link
                 key={link.href}

@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { FileUploadField } from "@/components/shared/file-upload-field";
 import { useToast } from "@/components/ui/use-toast";
 
 const emptyForm = {
@@ -152,16 +153,13 @@ export default function AdminSettingsPage() {
                 Users can switch from the header dropdown. Add new languages from the Languages menu.
               </p>
             </div>
-            <div className="space-y-1.5">
-              <Label htmlFor="logoUrl">Logo URL</Label>
-              <Input
-                id="logoUrl"
-                type="url"
-                value={form.logoUrl}
-                onChange={(e) => setForm((f) => ({ ...f, logoUrl: e.target.value }))}
-                placeholder="https://..."
-              />
-            </div>
+            <FileUploadField
+              id="logoUrl"
+              label="Logo"
+              value={form.logoUrl}
+              onChange={(value) => setForm((f) => ({ ...f, logoUrl: value }))}
+              accept="image/*"
+            />
           </CardContent>
         </Card>
 

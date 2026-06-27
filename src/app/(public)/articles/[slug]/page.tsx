@@ -86,6 +86,7 @@ export default async function ArticleDetailPage({
             alt={article.title}
             fill
             className="object-cover"
+            unoptimized={article.thumbnailUrl.startsWith("/uploads/")}
           />
         </div>
       )}

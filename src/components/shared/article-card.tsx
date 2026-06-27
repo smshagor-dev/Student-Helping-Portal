@@ -19,6 +19,7 @@ export function ArticleCard({ article }: { article: ArticleCardData }) {
               alt={article.title}
               fill
               className="object-cover"
+              unoptimized={article.thumbnailUrl.startsWith("/uploads/")}
             />
           ) : (
             <div className="flex h-full items-center justify-center">

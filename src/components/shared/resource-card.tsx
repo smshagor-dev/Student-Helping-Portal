@@ -26,6 +26,7 @@ export function ResourceCard({ resource }: { resource: ResourceCardData }) {
               alt={resource.title}
               fill
               className="object-cover"
+              unoptimized={resource.thumbnailUrl.startsWith("/uploads/")}
             />
           ) : (
             <div className="flex h-full items-center justify-center">

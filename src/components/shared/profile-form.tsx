@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { FileUploadField } from "@/components/shared/file-upload-field";
 import { useToast } from "@/components/ui/use-toast";
 
 export function ProfileForm({
@@ -92,15 +93,13 @@ export function ProfileForm({
               <Label htmlFor="email">Email</Label>
               <Input id="email" value={user.email} disabled />
             </div>
-            <div className="space-y-1.5">
-              <Label htmlFor="image">Avatar Image URL</Label>
-              <Input
-                id="image"
-                value={image}
-                onChange={(e) => setImage(e.target.value)}
-                placeholder="https://..."
-              />
-            </div>
+            <FileUploadField
+              id="image"
+              label="Avatar Image"
+              value={image}
+              onChange={setImage}
+              accept="image/*"
+            />
             <Button type="submit" disabled={profileLoading}>
               {profileLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
               Save Changes

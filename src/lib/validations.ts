@@ -38,6 +38,24 @@ const slug = z
   .max(150)
   .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Slug must be URL-friendly (lowercase letters, numbers, hyphens)");
 
+const urlOrUploadPath = z
+  .string()
+  .trim()
+  .refine(
+    (value) => {
+      if (!value) return true;
+      if (value.startsWith("/uploads/")) return true;
+
+      try {
+        new URL(value);
+        return true;
+      } catch {
+        return false;
+      }
+    },
+    { message: "Must be an uploaded file path or a valid URL" }
+  );
+
 export const categorySchema = z.object({
   name: z.string().trim().min(2).max(100),
   slug,
@@ -62,9 +80,9 @@ export const resourceSchema = z.object({
   slug,
   description: z.string().trim().min(10).max(5000),
   resourceType: resourceTypeEnum,
-  fileUrl: z.string().trim().url().optional().or(z.literal("")),
+  fileUrl: urlOrUploadPath.optional().or(z.literal("")),
   videoUrl: z.string().trim().url().optional().or(z.literal("")),
-  thumbnailUrl: z.string().trim().url().optional().or(z.literal("")),
+  thumbnailUrl: urlOrUploadPath.optional().or(z.literal("")),
   isFeatured: z.boolean().default(false),
   status: statusEnum.default("DRAFT"),
   categoryId: z.string().optional().nullable(),
@@ -87,7 +105,7 @@ export const articleSchema = z.object({
   slug,
   excerpt: z.string().trim().min(10).max(500),
   content: z.string().trim().min(20),
-  thumbnailUrl: z.string().trim().url().optional().or(z.literal("")),
+  thumbnailUrl: urlOrUploadPath.optional().or(z.literal("")),
   status: statusEnum.default("DRAFT"),
   categoryId: z.string().optional().nullable(),
 });
@@ -96,7 +114,7 @@ export const downloadSchema = z.object({
   title: z.string().trim().min(3).max(200),
   slug,
   description: z.string().trim().min(10).max(2000),
-  fileUrl: z.string().trim().url(),
+  fileUrl: urlOrUploadPath.refine((value) => value.length > 0, "File is required"),
   status: statusEnum.default("DRAFT"),
   categoryId: z.string().optional().nullable(),
 });
@@ -138,7 +156,7 @@ export const contactMessageSchema = z.object({
 export const siteSettingSchema = z.object({
   siteName: z.string().trim().min(2).max(100),
   siteLanguage: z.string().trim().min(2).max(10).regex(/^[a-z]{2,10}$/),
-  logoUrl: z.string().trim().url().optional().or(z.literal("")),
+  logoUrl: urlOrUploadPath.optional().or(z.literal("")),
   contactEmail: z.string().trim().toLowerCase().email(),
   phone: z.string().trim().max(30).optional().or(z.literal("")),
   address: z.string().trim().max(300).optional().or(z.literal("")),
@@ -159,12 +177,15 @@ export const languageSchema = z.object({
 });
 
 export const languageTranslationSchema = z.object({
-  translations: z.record(z.string(), z.string()),
+  translations: z.record(
+    z.string().trim().min(1).regex(/^[a-zA-Z0-9_.-]+$/, "Translation keys can only contain letters, numbers, dots, underscores, and hyphens"),
+    z.string()
+  ),
 });
 
 export const profileUpdateSchema = z.object({
   name: z.string().trim().min(2).max(100),
-  image: z.string().trim().url().optional().or(z.literal("")),
+  image: urlOrUploadPath.optional().or(z.literal("")),
 });
 
 export const passwordChangeSchema = z

@@ -7,6 +7,7 @@ import type { Role } from "@prisma/client";
 type SessionUserToken = {
   id?: string;
   role?: Role;
+  picture?: string | null;
 };
 
 declare module "next-auth" {
@@ -79,6 +80,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (user) {
         jwtToken.id = user.id as string;
         jwtToken.role = (user as { role: Role }).role;
+        jwtToken.picture = (user as { image?: string | null }).image ?? null;
       }
       return jwtToken;
     },
@@ -87,6 +89,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (session.user) {
         session.user.id = jwtToken.id ?? "";
         session.user.role = jwtToken.role ?? "STUDENT";
+        session.user.image = jwtToken.picture ?? null;
       }
       return session;
     },

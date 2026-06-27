@@ -31,6 +31,7 @@ import {
 import { DeleteButton } from "@/components/admin/delete-button";
 import { StatusBadge } from "@/components/admin/status-badge";
 import { EmptyState } from "@/components/shared/empty-state";
+import { FileUploadField } from "@/components/shared/file-upload-field";
 import { TableSkeleton } from "@/components/shared/skeletons";
 import { useToast } from "@/components/ui/use-toast";
 import { slugifyText } from "@/lib/utils";
@@ -251,16 +252,13 @@ export default function AdminArticlesPage() {
                 onChange={(e) => setForm((f) => ({ ...f, content: e.target.value }))}
               />
             </div>
-            <div className="space-y-1.5">
-              <Label htmlFor="thumbnailUrl">Thumbnail URL</Label>
-              <Input
-                id="thumbnailUrl"
-                type="url"
-                value={form.thumbnailUrl}
-                onChange={(e) => setForm((f) => ({ ...f, thumbnailUrl: e.target.value }))}
-                placeholder="https://..."
-              />
-            </div>
+            <FileUploadField
+              id="thumbnailUrl"
+              label="Thumbnail"
+              value={form.thumbnailUrl}
+              onChange={(value) => setForm((f) => ({ ...f, thumbnailUrl: value }))}
+              accept="image/*"
+            />
 
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-1.5">
